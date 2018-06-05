@@ -1,0 +1,22 @@
+-- EJECUTAR UNO A LA VEZ!!
+
+-- Seleccionar la base de Datos
+USE RentaDVDs
+-- Ingresar registros en la tabla
+INSERT INTO Clientes (nombre, apellido, fechaNacimiento,ciudad,parroquia,barrio,celular,telefono)
+VALUES ("Gabriel","Viera",19981024,"Quito","Guamaní","Plan Victoria","0998710939","024524294");
+INSERT INTO Clientes (nombre, apellido, fechaNacimiento,ciudad,parroquia,barrio,celular,telefono)
+VALUES ("Erick","Llumiquinga",19980301,"Quito","Villaflora","El Calzado","0987333532","024524198");
+INSERT INTO Clientes (nombre, apellido, fechaNacimiento,ciudad,parroquia,barrio,celular,telefono)
+VALUES ("Manuel","Lucero",20001224,"Quito","Guamaní","Venecia","0987654812","024526598");
+-- ELIMINAR UN REGISTRO 
+-- REVISAR CON UN SELECT LO QUE DESEAMOS ELIMINAR
+SELECT * FROM Clientes WHERE id = 2;
+-- ELIMINAR EL REGISTRO DE LA TABLA 
+DELETE FROM Clientes WHERE id = 2;
+-- CONSULTAR TODOS LOS DATOS DE LA TABLA
+SELECT * FROM Clientes 
+-- CONSULTAR NOMBRE Y APELLIDO DE LA TABLA EN UNA COLUMNA
+SELECT CONCAT(nombre," ",apellido)FROM Clientes
+-- CONSULTAR REGISTROS POR CONDICIONES
+SELECT * FROM Clientes WHERE nombre="Gabriel";
