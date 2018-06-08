@@ -1,0 +1,32 @@
+CREATE DATABASE EjemploMascotas
+USE EjemploMascotas
+-- Se crean las tablas 
+CREATE TABLE personas (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (50)
+);
+CREATE TABLE mascotas (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (50),
+idDueño INT,
+FOREIGN KEY (idDueño) REFERENCES personas(id)
+);
+-- Ingresamos registros a las tablas
+-- Definimos una variable en la cual se almacene el último ID que se creo en la tabla personas
+-- y así usarlo para relacionar a la mascota con su dueño.
+INSERT INTO personas (nombre) VALUES ("Gabriel");
+SET @ultimoIdPersonas = last_insert_id();
+INSERT INTO mascotas (nombre, idDueño) VALUES ("JR",@ultimoIdPersonas);
+INSERT INTO personas (nombre) VALUES ("Andres");
+SET @ultimoIdPersonas = last_insert_id();
+INSERT INTO mascotas (nombre, idDueño) VALUES ("Michi",@ultimoIdPersonas);
+INSERT INTO mascotas (nombre, idDueño) VALUES ("Toby",@ultimoIdPersonas);
+INSERT INTO mascotas (nombre, idDueño) VALUES ("Peluchin",@ultimoIdPersonas);
+INSERT INTO personas (nombre) VALUES ("Manuel");
+SET @ultimoIdPersonas = last_insert_id();
+INSERT INTO mascotas (nombre, idDueño) VALUES ("Laica",@ultimoIdPersonas);
+INSERT INTO mascotas (nombre, idDueño) VALUES ("Max",@ultimoIdPersonas);
+INSERT INTO personas (nombre) VALUES ("Diana");
+SET @ultimoIdPersonas = last_insert_id();
+INSERT INTO mascotas (nombre, idDueño) VALUES ("Oso",@ultimoIdPersonas);
+INSERT INTO mascotas (nombre, idDueño) VALUES ("Trapo",@ultimoIdPersonas);
