@@ -1,0 +1,40 @@
+--Creaciond e la database
+CREATE DATABASE RentaDvds
+--Seleccionar la base de datos creada
+USE RentaDvds
+-- Creación de todas las tablas para la renta de DVD's
+CREATE TABLE Clientes (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR (50) NOT NULL,
+    apellido VARCHAR (50) NOT NULL,
+    fechaNacimiento DATE NOT NULL,
+    ciudad VARCHAR (50) NOT NULL,
+    parroquia VARCHAR (50) NOT NULL,
+    barrio VARCHAR (50)NOT NULL,     
+    celular VARCHAR (15),
+    telefono VARCHAR (15) NOT NULL
+);
+CREATE TABLE Dvds (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (50),
+genero VARCHAR (50),
+pais VARCHAR (50),
+año INT (4),
+duracion INT (10)
+);
+CREATE TABLE PeliculaCliente (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+idCliente INT,
+idPelicula INT,
+FOREIGN KEY (idCliente) REFERENCES Clientes(id),
+FOREIGN KEY (idPelicula) REFERENCES Dvds(id)
+);
+-- Ingreso de registros en la tabla con variables que almacenen el ultimo id creado
+INSERT INTO Clientes (nombre, apellido, fechaNacimiento,ciudad,parroquia,barrio,celular,telefono)
+VALUES ("Gabriel","Viera",19981024,"Quito","Guamaní","Plan Victoria","0998710939","024524294");
+SET @ultimoIdCliente = last_insert_id();
+INSERT INTO Dvds (nombre, genero, pais, año, duracion) 
+VALUES ("El señor de los anillos y la comunidad del anillo","Fantasia","Reino Unido",2001,228);
+SET @ultimoIdDvds = last_insert_id();
+INSERT INTO PeliculaCliente (idCliente,idPelicula)
+VALUES(@ultimoIdCliente,@ultimoIdDvds);
