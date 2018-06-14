@@ -54,3 +54,8 @@ VALUES ("Angel","Electrónica",2018,"David Guetta","Electro","25");
 SET @ultimoIdDvds =LAST_INSERT_ID();
 INSERT INTO Renta (nombreDvD,cliente,fechaRenta,fechaEntrega)
 VALUES (@ultimoIdClientes,@ultimoIdDvds,20180614,20180714);
+
+--Contador
+SELECT AVG (año) FROM Dvds;
+--Contador de repetidos
+SELECT nombre, count(nombre) as cantidad from Clientes group by nombre;
