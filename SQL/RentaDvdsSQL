@@ -1,0 +1,56 @@
+create database rentadvds;
+use rentadvds;
+CREATE TABLE Clientes (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (50) NOT NULL,
+apellido VARCHAR (50) NOT NULL,
+ciudad VARCHAR (50) NOT NULL,
+barrio VARCHAR (50) NOT NULL,
+telefono VARCHAR (10),
+celular VARCHAR (10),
+fechaNacimiento DATE NOT NULL
+);
+CREATE TABLE Dvds (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (50),
+genero VARCHAR (50),
+año INT,
+artista VARCHAR (50),
+album VARCHAR (50),
+precio INT
+);
+CREATE TABLE Renta (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombreDvD INT,
+cliente INT,
+fechaRenta DATE,
+fechaEntrega DATE,
+FOREIGN KEY (nombreDvD) REFERENCES Dvds(id),
+FOREIGN KEY (cliente) REFERENCES Clientes(id)
+);
+INSERT INTO Clientes (nombre,apellido,ciudad,barrio,telefono,celular,fechaNacimiento)
+VALUES ("Gabriel","Viera","Quito","Guamani","024524294","0998710939",19981024);
+SET @ultimoIdClientes = LAST_INSERT_ID(); 	
+INSERT INTO Dvds (nombre,genero,año,artista,album,precio) 
+VALUES ("Death","Death Metal",1996,"Death","Spiritual Healing","25");
+SET @ultimoIdDvds =LAST_INSERT_ID();
+INSERT INTO Renta (nombreDvD,cliente,fechaRenta,fechaEntrega)
+VALUES (@ultimoIdClientes,@ultimoIdDvds,20180614,20180714);
+-- Segundo Registro 
+INSERT INTO Clientes (nombre,apellido,ciudad,barrio,telefono,celular,fechaNacimiento)
+VALUES ("Andres","Jácome","Quito","Guamani","024524294","0998710939",19981024);
+SET @ultimoIdClientes = LAST_INSERT_ID(); 	
+INSERT INTO Dvds (nombre,genero,año,artista,album,precio) 
+VALUES ("Metallica","Trash Metal",1994,"James Heatflied","ReLoad","25");
+SET @ultimoIdDvds =LAST_INSERT_ID();
+INSERT INTO Renta (nombreDvD,cliente,fechaRenta,fechaEntrega)
+VALUES (@ultimoIdClientes,@ultimoIdDvds,20180614,20180714);
+-- Tercer Registro
+INSERT INTO Clientes (nombre,apellido,ciudad,barrio,telefono,celular,fechaNacimiento)
+VALUES ("Manuel","Andrade","Quito","Guamani","024524294","0998710939",19981024);
+SET @ultimoIdClientes = LAST_INSERT_ID(); 	
+INSERT INTO Dvds (nombre,genero,año,artista,album,precio) 
+VALUES ("Angel","Electrónica",2018,"David Guetta","Electro","25");
+SET @ultimoIdDvds =LAST_INSERT_ID();
+INSERT INTO Renta (nombreDvD,cliente,fechaRenta,fechaEntrega)
+VALUES (@ultimoIdClientes,@ultimoIdDvds,20180614,20180714);
