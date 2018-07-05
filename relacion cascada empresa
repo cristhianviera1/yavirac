@@ -1,0 +1,45 @@
+USE GabrielBD;
+
+CREATE TABLE Directores(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100)
+);
+CREATE TABLE Gerentes(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100),
+idDirector INT,
+FOREIGN KEY (idDirector) REFERENCES Directores(id)
+);
+CREATE TABLE Jefes(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100),
+idGerente INT,
+FOREIGN KEY (idGerente) REFERENCES Gerentes(id)
+);
+CREATE TABLE Supervisores(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100),
+idJefe INT,
+FOREIGN KEY (idJefe) REFERENCES Jefes(id)
+);
+CREATE TABLE Funcionarios(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(100),
+idSupervisor INT,
+FOREIGN KEY (idSupervisor) REFERENCES Supervisores(id)
+);
+
+USE GabrielBD;
+
+INSERT INTO Directores (nombre) VALUES ("Gabriel");
+SET @idDirector = last_insert_id();
+INSERT INTO Gerentes (nombre,idDirector) VALUES ("Andres",@idDirector);
+SET @idGerente = last_insert_id();
+INSERT INTO Jefes (nombre,idGerente) VALUES ("Manuel",@idGerente);
+SET @idJefe = last_insert_id();
+INSERT INTO Supervisores (nombre,idJefe) VALUES ("Lucia",@idJefe);
+SET @idSupervisor = last_insert_id();
+INSERT INTO Funcionarios (nombre,idSupervisor) VALUES ("Junior",@idSupervisor);
+
+
+select * from Directores,Gerentes,Jefes,Supervisores,Funcionarios;
