@@ -43,3 +43,6 @@ INSERT INTO Parroquias (nombre,idCiudad) VALUES ("Guamani",@idCiudad);
 
 use GabrielBD;
 SELECT * FROM Continentes,Paises,Provincias,Ciudades,Parroquias;
+
+--Consula en la cual recuperamos todas las ciudades del continente que tiene por id = 1
+SELECT Continentes.id, Continentes.nombre, Paises.nombre, Ciudades.nombre  FROM Continentes INNER JOIN Paises INNER JOIN Ciudades WHERE Continentes.id = "1";
