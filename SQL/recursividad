@@ -1,0 +1,21 @@
+CREATE DATABASE GabrielBD;
+USE GabrielBD;
+CREATE TABLE ubicacionesGeograficas(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100) NOT NULL,
+idRelacion INT,
+-- En esta parte se indica que la clave foranea esta dirigida a la misma tabla
+FOREIGN KEY (idRelacion) REFERENCES ubicacionesGeograficas(id)
+);
+
+use GabrielBD;
+INSERT INTO ubicacionesGeograficas (nombre) 
+VALUES ("America");
+SET @ultimoIdContinente = last_insert_id();
+INSERT INTO ubicacionesGeograficas (nombre,idRelacion)
+VALUES ("Ecuador",@ultimoIdContinente);
+SET @ultimoIdPais = last_insert_id();
+INSERT INTO ubicacionesGeograficas (nombre,idRelacion)
+VALUES ("Quito",@ultimoIdPais);
+
+select * from ubicacionesGeograficas;
