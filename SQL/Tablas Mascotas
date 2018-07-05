@@ -1,0 +1,25 @@
+USE GabrielBD;
+CREATE TABLE MascotasDueño(
+id INT NOT NULL AUTO_INCREMENT,
+dueño VARCHAR (100),
+mascotaUno VARCHAR (100),
+mascotaDos VARCHAR (100),
+mascotaTres VARCHAR (100),
+mascotaCuatro VARCHAR (100)
+);
+
+CREATE TABLE Mascotas(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100)
+);
+CREATE TABLE Dueño (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nombre VARCHAR (100)
+);
+CREATE TABLE Mascotas_Dueño (
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+idMascota INT,
+idDueño INT,
+FOREIGN KEY (idMascota) REFERENCES Mascotas(id),
+FOREIGN KEY (idDueño) REFERENCES Dueño(id)
+);
