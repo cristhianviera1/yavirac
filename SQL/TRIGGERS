@@ -1,0 +1,23 @@
+CREATE TABLE regdineroPersona(
+id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+idPersona INT,
+cantidadHaber VARCHAR (25),
+cantidadDeber VARCHAR (25),
+insertado DATETIME
+);
+
+CREATE TRIGGER dineroPersona_AI AFTER INSERT ON dineroPersona FOR EACH ROW 
+INSERT INTO regdineroPersona(idPersona,cantidadHaber,cantidadDeber,insertado)
+VALUES (new.idPersona,new.cantidadHaber,new.cantidadDeber,now());
+
+CREATE TRIGGER dineroPersona_BD BEFORE DELETE ON dineroPersona FOR EACH ROW 
+INSERT INTO regdineroPersona(idPersona,cantidadHaber,cantidadDeber,insertado)
+VALUES (last.idPersona,last.cantidadHaber,last.cantidadDeber,now());
+
+insert into personas (nombre,apellido,ciudad,numeroCuenta)
+VALUES ("Gabriel","Viera","Quito",1234567890);
+SET @ultimoIdPersonas = last_insert_id();
+INSERT INTO dineroPersona (idPersona,cantidadHaber,cantidadDeber)
+VALUES (@ultimoIdPeronas,100,2000000);
+
+DELETE FROM dineroPersona WHERE id=1;
