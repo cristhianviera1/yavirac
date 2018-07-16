@@ -1,0 +1,138 @@
+USE Recuperacion;
+/*Número total de alumnos*/
+SELECT count(id) AS TOTAL_ALUMNOS FROM Alumnos;
+/*Listado de alumnos por X curso*/
+SELECT Alumnos.id, Alumnos.nombres, Alumnos.apellidos
+FROM Alumnos INNER JOIN AlumnosCursos ON AlumnosCursos.id = Alumnos.id
+INNER JOIN Cursos ON AlumnosCursos.idCurso = Cursos.id WHERE Cursos.curso = "1A";
+/*Cuadro de honor del parcial 3 (Notas mayores a 91)*/
+SELECT Alumnos.nombres, Alumnos.apellidos, Notas.parcialTres FROM Alumnos 
+INNER JOIN Notas ON Alumnos.id=Notas.idAlumno 
+WHERE Notas.parcialTres>9.1;
+/*Aplazados por materia !Entendi quienes pierden por materia*/
+SELECT Alumnos.nombres, Alumnos.apellidos,Materias.nombre AS Materia, Notas.promedio FROM Alumnos
+INNER JOIN Notas ON Notas.idAlumno = Alumnos.id 
+INNER JOIN Materias ON Materias.id = Notas.idMateria
+WHERE Notas.promedio < 7 order by Notas.idMateria;
+/*Aplazados por curso !Entendi los que pierden ordenado por curso!*/
+SELECT Alumnos.nombres, Alumnos.apellidos, Cursos.curso, Notas.promedio 
+FROM Alumnos 
+INNER JOIN Notas ON Notas.idAlumno = Alumnos.id
+INNER JOIN AlumnosCursos ON AlumnosCursos.idAlumno = Alumnos.id 
+INNER JOIN Cursos ON Cursos.id = AlumnosCursos.idCurso 
+WHERE Notas.promedio < 7 ORDER BY Cursos.curso;
+/*Mejores 10 promedios de todod el sistema -- 10 personas con el mejor puntaje de todo el sistema*/
+SELECT Alumnos.nombres, Alumnos.apellidos, Notas.promedio FROM Alumnos 
+INNER JOIN Notas ON Notas.idAlumno = Alumnos.id 
+ORDER BY Notas.promedio desc limit 10;
+/*Materias por maestros*/
+SELECT Materias.nombre AS Materia, Empleados.nombres, Empleados.apellido FROM Empleados
+INNER JOIN DocentesMaterias ON DocentesMaterias.idDocente = Empleados.id 
+INNER JOIN Materias ON DocentesMaterias.idMateria = Materias.id
+ORDER BY Empleados.nombres;
+/*Contar cuantas materias por masestros*/
+SELECT Empleados.nombres,Empleados.apellido, Count(Materias.id) AS TotalMaterias FROM DocentesMaterias
+INNER JOIN Empleados ON DocentesMaterias.idDocente = Empleados.id 
+INNER JOIN Materias ON Materias.id = DocentesMaterias.idMateria 
+GROUP BY (Empleados.nombres);
+/*Calcular el promedio anual de todas las notas*/
+SELECT AVG(Notas.promedio) AS PromedioTotal FROM Notas;
+/*Calcular promedio por sexo*/
+SELECT Alumnos.sexo, AVG(Notas.promedio) AS PromedioTotal FROM Alumnos
+INNER JOIN Notas ON Notas.idAlumno = Alumnos.id 
+GROUP BY (Alumnos.sexo);
+/*Alumnos a los que no se les ha asignado ninguna nota*/
+SELECT Alumnos.nombres, Alumnos.apellidos FROM Alumnos
+LEFT JOIN Notas ON Notas.idAlumno = Alumnos.id
+WHERE Notas.idAlumno is null;
+/*Maestros que no se les ha asignado ninguna materia*/
+SELECT Empleados.nombres, Empleados.apellido FROM Empleados
+LEFT JOIN DocentesMaterias ON DocentesMaterias.idDocente = Empleados.id
+WHERE DocentesMaterias.idDocente is null;
+/*Ver el historial de un alumno*/
+SELECT Alumnos.nombres, Alumnos.apellidos, Alumnos.sexo, Alumnos.cedula, Notas.parcialUno, Notas.parcialDos, Notas.parcialTres , Notas.promedio, CuentasAlumnos.montoDisponible
+FROM Alumnos
+LEFT JOIN Notas ON Notas.idAlumno = Alumnos.id
+LEFT JOIN CuentasAlumnos ON CuentasAlumnos.idAlumno = Alumnos.id;
+/*La nota más alta del año*/
+SELECT MAX(Notas.promedio) as MáximoPuntaje FROM NOTAS;
+/*Ver la nota más baja del año*/
+SELECT MIN(Notas.promedio) AS MinimoPuntaje FROM NOTAS;
+/*Alumnos que pierden derecho a la primera recuperacion promedio <40*/
+SELECT Alumnos.nombres, Alumnos.apellidos, Notas.promedio FROM Alumnos
+INNER JOIN Notas ON Notas.idAlumno = Alumnos.id 
+WHERE Notas.promedio < 4;
+/*Materias por curso*/
+SELECT Cursos.curso, COUNT(Materias.id) AS TotalMaterias FROM Cursos
+INNER JOIN MateriasCursos ON MateriasCursos.idCurso = Cursos.id 
+INNER JOIN Materias ON Materias.id = MateriasCursos.idMateria
+GROUP BY Cursos.id;
+/*Cuantos alumnos van a recuperacion*/
+SELECT COUNT(Notas.id) FROM Notas WHERE promedio<6;
+/*Cuantos alumnos van a recuperación por materia*/
+SELECT Materias.nombre, count(Notas.promedio) AS EstudiantesEnRecuperacion FROM Materias
+INNER JOIN Notas ON Notas.idMateria = Materias.id WHERE Notas.promedio<6
+GROUP BY (Materias.nombre);
+/*Alumnos repitentes*/
+SELECT Alumnos.nombres, Alumnos.apellidos FROM Alumnos
+INNER JOIN MatriculaAlumnos ON MatriculaAlumnos.idAlumno = Alumnos.id
+WHERE numeroMatricula >1;
+/*Sumar cuanto ha cobrado cada empleado*/
+SELECT Empleados.nombres, SUM(Cobros.monto) AS TotalCobrado FROM Empleados
+INNER JOIN Cobros ON Cobros.idEmpleado = Empleados.id
+GROUP BY Empleados.nombres;
+/*Sumar todos los cobros realizados*/
+SELECT SUM(Cobros.monto) AS CobradoUnTotal FROM Cobros;
+/*Sumar los cobros por concepto*/
+SELECT ConceptosDinero.nombre as CONCEPTO, sum(Cobros.monto) AS SumaTotal FROM ConceptosDinero
+INNER JOIN Cobros ON Cobros.idConcepto = ConceptosDinero.id
+GROUP BY ConceptosDinero.nombre;
+/*Contar cuantos cobros se han hecho*/
+SELECT COUNT(Cobros.id) FROM Cobros;
+/*Ver el estado de cuenta de un alumno*/
+SELECT Alumnos.nombres, Alumnos.apellidos, CuentasAlumnos.montoDisponible FROM Alumnos
+INNER JOIN CuentasAlumnos ON CuentasAlumnos.idAlumno = Alumnos.id;
+/*Contar cuantos empleados hay*/
+SELECT count(Empleados.id) AS TotalEmpleados FROM Empleados;
+/*Alumnos que no han realizado ningún pago*/
+SELECT Alumnos.nombres, Alumnos.apellidos FROM Alumnos
+LEFT JOIN Pagos ON Pagos.idAlumno = Alumnos.id
+WHERE Pagos.idAlumno is null;
+/*Contar cuantos productos hay en la tienda*/
+SELECT sum(Productos.id) as TotalDeproductos FROM Productos;
+/*Calcular la inversion en la tienda*/
+SELECT SUM(Productos.precioCompra) AS TotalInvertido FROM Productos;
+/*Ver los articulos por proveedor*/
+SELECT Productos.nombre as Productos, proveedores.nombre AS Proveedores FROM Productos 
+INNER JOIN Proveedores ON Proveedores.id = Productos.idProveedor 
+ORDER BY Proveedores.nombre;
+/*Cuantos proveedores tenemos*/
+SELECT count(Proveedores.id) AS Proveedores FROM Proveedores;
+/*Total Vendido*/
+SELECT SUM(totalPagar) AS SumaTotalDeProductos FROM Facturas; 
+/*Ventas por facturas*/
+SELECT  Facturas.id AS idFactura, Count(Detalles.idProducto) AS TotalProductos FROM Detalles 
+INNER JOIN Facturas ON Facturas.id = Detalles.idFactura
+GROUP BY Facturas.id;
+/*Total Ventas por Factura*/
+SELECT  Facturas.id AS idFactura, Sum(Detalles.sumaProductos) AS SumaProductos FROM Detalles 
+INNER JOIN Facturas ON Facturas.id = Detalles.idFactura
+GROUP BY Facturas.id;
+/*Total Impuesto cobrado*/
+SELECT sum(iva) AS TotalIvaCobrado FROM Facturas;
+/*Total impuesto cobrado por factura*/
+SELECT Facturas.id, round(sum(Facturas.iva)) AS TotalDeIvaCobrado FROM Facturas
+GROUP BY Facturas.id;
+/*Productos que no han tenido movimiento*/
+SELECT Productos.nombre FROM Productos 
+LEFT JOIN Detalles ON Detalles.idProducto = Productos.id 
+WHERE Detalles.idProducto is null;
+/*Ver la Factura más alta*/
+SELECT Facturas.id AS id_Factura,Facturas.totalPagar AS ValorMásAlto FROM Facturas 
+GROUP BY Facturas.id ORDER BY totalPagar DESC LIMIT 1;
+/*Ver una factura X Completa*/
+SELECT Facturas.id AS Factura_id, Clientes.nombre AS Cliente_nombre, Clientes.apellido AS Cliente_apellido,Clientes.telefono AS Cliente_telefono,Clientes.direccion AS Cliente_direccion,Detalles.precioUnitario AS Detalles_precioUnitario,
+Detalles.precioUnitario,Detalles.cantidad,Detalles.sumaProductos,Facturas.total,Facturas.iva,Facturas.totalpagar
+FROM Facturas
+INNER JOIN Clientes ON Clientes.id = Facturas.idCliente
+INNER JOIN Detalles ON Detalles.idFactura = Facturas.id;
