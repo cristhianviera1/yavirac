@@ -31,6 +31,9 @@ cedula 	VARCHAR(15),
 telefono VARCHAR(15),
 direccion VARCHAR(500)
 );
+
+
+
 -- Tablas de mascotas y dueños
 CREATE TABLE Dueños(
 id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -47,6 +50,8 @@ vacunas VARCHAR(300),
 idDueño INT,
 FOREIGN KEY (idDueño) REFERENCES Dueños(id)
 );
+
+
 
 -- TABLAS DE LIBROS CON SUS RESPECTIVOS AUTORES
 CREATE TABLE Autores(
@@ -91,10 +96,13 @@ CREATE PROCEDURE ingProveedores (
 nombre VARCHAR(100),
 encargado VARCHAR(100),
 telefono VARCHAR (15),
-direccion VARCHAR(500)
+direccion VARCHAR(500),
+OUT ingId INT
 )
 BEGIN
 INSERT INTO Proveedores (nombre,encargado,telefono,direccion) VALUES(nombre,encargado,telefono,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaProveedores(
@@ -128,10 +136,13 @@ CREATE PROCEDURE ingProductos(
 nombre VARCHAR(100),
 categoria VARCHAR(50),
 precio FLOAT,
-proveedor INT
+proveedor INT,
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Productos (nombre,categoria,precio,proveedor) VALUES (nombre,categoria,precio,proveedor);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaProductos(
@@ -166,10 +177,13 @@ nombre VARCHAR(50),
 apellido VARCHAR(50),
 cedula 	VARCHAR(15),
 telefono VARCHAR(15),
-direccion VARCHAR(500)
+direccion VARCHAR(500),
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Vendedores (nombre,apellido,cedula,telefono,direccion) VALUES (nombre,apellido,cedula,telefono,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaVendedores(
@@ -205,11 +219,13 @@ nombre VARCHAR(50),
 apellido VARCHAR(50),
 cedula 	VARCHAR(15),
 telefono VARCHAR(15),
-direccion VARCHAR(500)
-
+direccion VARCHAR(500),
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Clientes (nombre,apellido,cedula,telefono,direccion) VALUES (nombre,apellido,cedula,telefono,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaClientes(
@@ -244,10 +260,13 @@ END;
 CREATE PROCEDURE ingDueños(
 nombre VARCHAR(100),
 telefono VARCHAR(15),
-direccion VARCHAR(200) 
+direccion VARCHAR(200),
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Dueños (nombre,telefono,direccion) VALUES (nombre,telefono,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaDueños(
@@ -282,10 +301,13 @@ raza VARCHAR(100),
 nombre VARCHAR(100),
 fechaNacimiento DATE,
 vacunas VARCHAR(300),
-idDueño INT
+idDueño INT,
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Mascotas (raza,nombre,fechaNacimiento,vacunas,idDueño) VALUES (raza,nombre,fechaNacimiento,vacunas,idDueño);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaMascotas(
@@ -319,10 +341,13 @@ CREATE PROCEDURE ingAutores(
 nombre VARCHAR(100),
 apellido VARCHAR(100),
 fechaNacimiento DATE,
-ciudadNacimiento VARCHAR(100)
+ciudadNacimiento VARCHAR(100),
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Autores (nombre,apellido,fechaNacimiento,ciudadNacimiento) VALUES (nombre,apellido,fechaNacimiento,ciudadNacimiento);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaAutores(
@@ -357,10 +382,13 @@ CREATE PROCEDURE ingLibros(
 nombre VARCHAR(100),
 genero VARCHAR(100),
 fechaLanzamiento DATE,
-idAutor INT
+idAutor INT,
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Libros (nombre,genero,fechaLanzamiento,idAutor) VALUES (nombre,genero,fechaLanzamiento,idAutor);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaLibros(
@@ -394,10 +422,13 @@ CREATE PROCEDURE ingEmpresas(
 nombre VARCHAR(100),
 tutor VARCHAR(100),
 telefono VARCHAR(15),
-direccion VARCHAR(600)
+direccion VARCHAR(600),
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Empresas (nombre,tutor,telefono,direccion) VALUES (nombre,tutor,telefono,direccion);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaEmpresas(
@@ -433,10 +464,13 @@ apellido VARCHAR(100),
 cedula VARCHAR(15),
 fechaNacimiento DATE,
 carrera VARCHAR(100),
-idEmpresa INT
+idEmpresa INT,
+OUT ingId INT
 )
 BEGIN 
 INSERT INTO Alumnos (nombre,apellido,cedula,fechaNacimiento,carrera,idEmpresa) VALUES (nombre,apellido,cedula,fechaNacimiento,carrera,idEmpresa);
+SET ingId = last_insert_id();
+SELECT * FROM Proveedores WHERE id = ingId;
 END;
 
 CREATE PROCEDURE reaAlumnos(
